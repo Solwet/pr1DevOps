@@ -55,6 +55,7 @@ scrape_configs:
   - job_name: 'cadvisor'
     static_configs:
       - targets: ['localhost:8080']
+```
 ## 🖥️ Инструкции по запуску и подключению Grafana
 
 ### 1. Установка и запуск
