@@ -55,3 +55,50 @@ scrape_configs:
   - job_name: 'cadvisor'
     static_configs:
       - targets: ['localhost:8080']
+## 🖥️ Инструкции по запуску и подключению Grafana
+
+### 1. Установка и запуск
+
+1. Скачайте Grafana с [официального сайта](https://grafana.com/grafana/download).
+2. Установите в соответствии с вашей ОС:
+   - **Windows**: запустите `.exe`-установщик.
+   - **Linux (Debian/Ubuntu)**:
+     ```bash
+     sudo apt-get install -y software-properties-common
+     wget -q -O - https://apt.grafana.com/gpg.key | sudo apt-key add -
+     echo "deb https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+     sudo apt-get update
+     sudo apt-get install grafana
+     sudo systemctl start grafana-server
+     ```
+   - **macOS**:
+     ```bash
+     brew install grafana
+     brew services start grafana
+     ```
+3. После запуска откройте в браузере: [http://localhost:3000](http://localhost:3000).
+
+> 🔐 Логин и пароль по умолчанию: `admin` / `admin`. При первом входе система предложит сменить пароль.
+
+---
+
+### 2. Подключение Prometheus как источника данных
+
+1. В боковом меню Grafana выберите **Configuration → Data Sources**. 
+2. Нажмите **Add data source**. 
+3. Выберите **Prometheus** из списка. 
+4. В поле **HTTP → URL** укажите адрес сервера Prometheus, 
+например: http://localhost:9090
+5. Прокрутите вниз и нажмите **Save & Test**.
+
+✅ Если всё настроено верно, появится сообщение: **"Data source is working"**.
+
+---
+
+### 3. Работа с дашбордами
+
+- Чтобы создать новый дашборд: нажмите **+ → Dashboard → New**.
+- Введите PromQL-запрос, например:
+  ```promql
+  rate(node_cpu_seconds_total{mode="idle"}[1m])
+
